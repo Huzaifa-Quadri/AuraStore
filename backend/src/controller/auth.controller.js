@@ -5,7 +5,7 @@ import { generateToken } from "../utils/tokens.js";
 import { ApiError } from "../utils/ApiError.js";
 
 export const registerUser = asyncHandler(async (req, res) => {
-  const { email, contact, password, fullname } = req.body;
+  const { email, contact, password, fullname, role } = req.body;
 
   const existingUser = await UserModel.findOne({
     $or: [{ email }, { contact }],
@@ -20,6 +20,7 @@ export const registerUser = asyncHandler(async (req, res) => {
     contact,
     password,
     fullname,
+    role,
   });
 
   generateToken(res, user._id, user.email);

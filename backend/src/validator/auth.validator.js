@@ -32,6 +32,10 @@ export const registerValidator = [
     .withMessage(
       "Password can only contain letters, numbers, and standard special characters",
     ),
+  body("role")
+    .optional()
+    .isIn(["buyer", "seller", "admin"])
+    .withMessage("Invalid role - User can be either buyer, seller or Admin"),
 ];
 
 /**
