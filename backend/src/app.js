@@ -50,4 +50,26 @@ app.get("/api/health", (req, res) => {
   });
 });
 
+// ============================================
+// Routes
+// ============================================
+
+import authRouter from "./routes/auth.routes.js";
+import { errorHandler } from "./middleware/error.middleware.js";
+import { ApiError } from "./utils/ApiError.js";
+
+app.use("/api/auth", authRouter);
+
+// ============================================
+// Global Error Handling
+// ============================================
+
+// 404 Route Catch-All
+app.use((req, res, next) => {
+  next(new ApiError(404, `Route ${req.originalUrl} not found`));
+});
+
+// Centralized Error Handling Middleware
+app.use(errorHandler);
+
 export default app;
