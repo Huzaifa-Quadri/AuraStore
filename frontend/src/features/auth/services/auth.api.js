@@ -21,3 +21,8 @@ export const registerUser = async ({
   });
   return response.data;
 };
+
+export const loginUser = async ({ email, password }) => {
+  const response = await authApiInstance.post("/login", { email, password });
+  return response.data;
+};

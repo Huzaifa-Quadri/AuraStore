@@ -33,3 +33,32 @@ export const registerUser = asyncHandler(async (req, res) => {
     },
   });
 });
+
+export const loginUser = asyncHandler(async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await UserModel.findOne({ email }).select("+password");
+
+  if (!user) {
+    throw new ApiError(HTTP_STATUS.NOT_FOUND, ERROR_MESSAGES.USER_NOT_FOUND);
+  }
+
+  const isPasswordValid = await user.comparePassword(password);
+
+  if (!isPasswordValid) {
+    throw new ApiError(
+      HTTP_STATUS.UNAUTHORIZED,
+      ERROR_MESSAGES.INVALID_CREDENTIALS,
+    );
+  }
+
+  generateToken(res, user._id, user.email);
+
+  res.status(200).json({
+    success: true,
+    message: "User logged in successfully",
+    data: {
+      user,
+    },
+  });
+});

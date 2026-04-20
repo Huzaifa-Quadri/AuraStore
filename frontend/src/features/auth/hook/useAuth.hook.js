@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { setError, setLoading, setUser } from "../state/auth.slice";
-import { registerUser } from "../services/auth.api";
+import { loginUser, registerUser } from "../services/auth.api";
 
 export const useAuth = () => {
   const dispatch = useDispatch();
@@ -22,10 +22,33 @@ export const useAuth = () => {
         role,
       });
       dispatch(setUser(response.data.user));
-      return response.data;
+
+      // Return the full outer payload so the component can read 'res.success'
+      return response;
     } catch (error) {
-      dispatch(setError(error.response.data.message));
-      return error.response.data;
+      const message =
+        error?.response?.data?.message ||
+        "Registration failed. Please try again.";
+      dispatch(setError(message));
+      return error.response?.data || { success: false, message };
+    } finally {
+      dispatch(setLoading(false));
+    }
+  }
+
+  async function handleLogin({ email, password }) {
+    try {
+      dispatch(setLoading(true));
+      const response = await loginUser({ email, password });
+      dispatch(setUser(response.data.user));
+
+      // Return the full outer payload so the component can read 'res.success'
+      return response;
+    } catch (error) {
+      const message =
+        error?.response?.data?.message || "Network error. Please try again.";
+      dispatch(setError(message));
+      return error.response?.data || { success: false, message };
     } finally {
       dispatch(setLoading(false));
     }
@@ -33,5 +56,6 @@ export const useAuth = () => {
 
   return {
     handleRegister,
+    handleLogin,
   };
 };
