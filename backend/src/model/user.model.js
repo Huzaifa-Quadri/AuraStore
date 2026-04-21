@@ -14,8 +14,17 @@ const userSchema = new mongoose.Schema({
   },
   contact: {
     type: String,
-    required: true,
+    required: [
+      function () {
+        return this.googleId ? false : true;
+      },
+      "Contact number is required",
+    ],
     unique: true,
+    sparse: true,
+    //? sparse: true is a configuration for indexes that tells the database: "Only include documents in this index if they actually have this field."
+
+    //? When combined with unique: true, it solves a specific problem with optional fields. Here is the breakdown of why we need it for your contact field:
   },
   fullname: {
     type: String,
@@ -28,9 +37,17 @@ const userSchema = new mongoose.Schema({
   },
   password: {
     type: String,
-    required: [true, "Password is required"],
-    minLength: [6, "Password must be at least 6 characters long"],
-    maxLength: [12, "Password must be at most 12 characters long"],
+    required: [
+      function () {
+        // If user is registered with googleId, password is not required
+        return this.googleId ? false : true;
+      },
+      "Password is required",
+    ],
+    select: false,
+  },
+  googleId: {
+    type: String,
     select: false,
   },
   isActive: {

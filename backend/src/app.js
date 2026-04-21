@@ -2,6 +2,9 @@ import express from "express";
 import cookieParser from "cookie-parser";
 import cors from "cors";
 import morgan from "morgan";
+import { Strategy as GoogleStrategy } from "passport-google-oauth20";
+import { config } from "./config/config.js";
+import passport from "passport";
 
 const app = express();
 
@@ -29,6 +32,27 @@ app.use(
     methods: ["GET", "POST", "PUT", "DELETE", "PATCH", "OPTIONS"],
     allowedHeaders: ["Content-Type", "Authorization"],
   }),
+);
+
+/*
+ * Passport Setup for Google Auth
+ */
+app.use(passport.initialize());
+
+// Configure Passport to use Google OAuth 2.0 strategy
+passport.use(
+  new GoogleStrategy(
+    {
+      clientID: config.GOOGLE_CLIENT_ID,
+      clientSecret: config.GOOGLE_CLIENT_SECRET,
+      callbackURL: "http://localhost:3000/api/auth/google/callback",
+    },
+    (accessToken, refreshToken, profile, done) => {
+      // Here, you would typically find or create a user in your database
+      // For this example, we'll just return the profile
+      return done(null, profile);
+    },
+  ),
 );
 
 // ============================================
