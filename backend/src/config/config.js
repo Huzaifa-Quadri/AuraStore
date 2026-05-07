@@ -21,6 +21,9 @@ if (!process.env.GOOGLE_CLIENT_ID) {
 if (!process.env.GOOGLE_CLIENT_SECRET) {
   throw new Error("GOOGLE_CLIENT_SECRET not Found in ENV");
 }
+if (!process.env.IMAGEKIT_PRIVATE_KEY) {
+  throw new Error("IMAGEKIT_PRIVATE_KEY not Found in ENV");
+}
 
 const MONGO_URI = process.env.MONGO_URI;
 const PORT = process.env.PORT;
@@ -32,6 +35,7 @@ const JWT_REFRESH_SECRET = process.env.JWT_REFRESH_SECRET;
 const JWT_EXPIRE = process.env.JWT_EXPIRE;
 const GOOGLE_CLIENT_ID = process.env.GOOGLE_CLIENT_ID;
 const GOOGLE_CLIENT_SECRET = process.env.GOOGLE_CLIENT_SECRET;
+const IMAGEKIT_PRIVATE_KEY = process.env.IMAGEKIT_PRIVATE_KEY;
 
 export const config = {
   MONGO_URI,
@@ -44,4 +48,5 @@ export const config = {
   JWT_EXPIRE,
   GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET,
+  IMAGEKIT_PRIVATE_KEY,
 };

@@ -81,8 +81,10 @@ app.get("/api/health", (req, res) => {
 import authRouter from "./routes/auth.routes.js";
 import { errorHandler } from "./middleware/error.middleware.js";
 import { ApiError } from "./utils/ApiError.js";
+import productRouter from "./routes/product.routes.js";
 
 app.use("/api/auth", authRouter);
+app.use("/api/products", productRouter);
 
 // ============================================
 // Global Error Handling
