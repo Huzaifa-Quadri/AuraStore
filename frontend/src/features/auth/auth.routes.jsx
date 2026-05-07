@@ -1,6 +1,8 @@
 import { createBrowserRouter } from "react-router-dom";
 import Login from "./pages/login";
 import Signup from "./pages/Signup";
+import SelectRole from "./pages/SelectRole";
+
 export const routes = createBrowserRouter([
   {
     path: "/",
@@ -13,5 +15,9 @@ export const routes = createBrowserRouter([
   {
     path: "/signup",
     element: <Signup />,
+  },
+  {
+    path: "/select-role",
+    element: <SelectRole />,
   },
 ]);
