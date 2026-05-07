@@ -26,7 +26,7 @@ export const registerValidator = [
   body("password")
     .notEmpty()
     .withMessage("Password is required")
-    .isLength({ min: 8 })
+    .isLength({ min: 8, max: 12 })
     .withMessage("Password must be at least 8 characters long")
     .matches(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g)
     .withMessage(

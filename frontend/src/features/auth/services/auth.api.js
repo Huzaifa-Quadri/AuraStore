@@ -26,3 +26,13 @@ export const loginUser = async ({ email, password }) => {
   const response = await authApiInstance.post("/login", { email, password });
   return response.data;
 };
+
+export const getMe = async () => {
+  const response = await authApiInstance.get("/me");
+  return response.data;
+};
+
+export const updateRole = async (role) => {
+  const response = await authApiInstance.patch("/role", { role });
+  return response.data;
+};
