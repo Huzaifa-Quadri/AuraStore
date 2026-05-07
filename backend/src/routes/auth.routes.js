@@ -8,7 +8,10 @@ import {
   googleCallback,
   loginUser,
   registerUser,
+  getMe,
+  selectRole,
 } from "../controller/auth.controller.js";
+import { authenticate } from "../middleware/auth.middleware.js";
 import passport from "passport";
 import { config } from "../config/config.js";
 
@@ -56,5 +59,19 @@ authRouter.get(
   }),
   googleCallback,
 );
+
+/**
+ * @route   GET /api/auth/me
+ * @desc    Get current authenticated user
+ * @access  Private
+ */
+authRouter.get("/me", authenticate, getMe);
+
+/**
+ * @route   PATCH /api/auth/role
+ * @desc    Set role for new Google OAuth users
+ * @access  Private
+ */
+authRouter.patch("/role", authenticate, selectRole);
 
 export default authRouter;

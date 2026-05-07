@@ -69,6 +69,7 @@ export const googleCallback = asyncHandler(async (req, res) => {
   const { id, displayName, emails } = req.user;
 
   let user = await UserModel.findOne({ email: emails[0].value });
+  let isNewUser = false;
 
   if (!user) {
     user = await UserModel.create({
@@ -76,20 +77,43 @@ export const googleCallback = asyncHandler(async (req, res) => {
       email: emails[0].value,
       googleId: id,
       isVerified: true,
-      // role : "buyer", //TODO: We have to do something about it !
     });
+    isNewUser = true;
   }
 
   generateToken(res, user._id, user.email);
-  // res.status(HTTP_STATUS.OK).json({
-  //   data: currUser,
-  //   message: "User logged in successfully",
-  // });
-  res.redirect(
+
+  const baseUrl =
     config.NODE_ENV === "development"
       ? `http://localhost:${config.Frontend_PORT}`
-      : config.CLIENT_URL
-        ? config.CLIENT_URL
-        : "/",
+      : config.CLIENT_URL || "/";
+
+  res.redirect(isNewUser ? `${baseUrl}/select-role` : baseUrl);
+});
+
+export const getMe = asyncHandler(async (req, res) => {
+  res.status(HTTP_STATUS.OK).json({
+    success: true,
+    data: { user: req.user },
+  });
+});
+
+export const selectRole = asyncHandler(async (req, res) => {
+  const { role } = req.body;
+
+  if (!["buyer", "seller"].includes(role)) {
+    throw new ApiError(HTTP_STATUS.BAD_REQUEST, "Invalid role. Must be buyer or seller.");
+  }
+
+  const user = await UserModel.findByIdAndUpdate(
+    req.user._id,
+    { role },
+    { new: true },
   );
+
+  res.status(HTTP_STATUS.OK).json({
+    success: true,
+    message: "Role updated successfully",
+    data: { user },
+  });
 });
