@@ -18,6 +18,8 @@ typings/
 
 # --- Build and Distribution ---
 dist/
+dist-ssr
+*.local
 build/
 out/
 .next/
