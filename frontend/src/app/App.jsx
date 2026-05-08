@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import "./App.css";
 import { RouterProvider } from "react-router-dom";
-import { routes } from "../features/auth/auth.routes";
+import { routes } from "./app.routes";
 import { useAuth } from "../features/auth/hook/useAuth.hook";
 
 const AppInner = () => {
