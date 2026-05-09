@@ -38,7 +38,12 @@ export default function Login() {
         password: form.password,
       });
       if (res?.success) {
-        navigate("/");
+        if (res.data.user.role === "buyer") {
+          navigate("/");
+        } else if (res.data.user.role === "seller") {
+          navigate("/seller/dashboard");
+        }
+        console.log("Login successful:", res);
       } else {
         setErrors({
           general: res?.message || "Login failed. Please try again.",
@@ -111,7 +116,7 @@ export default function Login() {
         {/* Bottom text on image */}
         <div className="absolute bottom-12 left-10 right-10 z-10">
           <p className="text-white/70 text-lg font-light leading-[1.6] italic m-0 tracking-[0.3px]">
-            "Fashion is the armor to survive the reality of everyday life."
+            &quot;Fashion is the armor to survive the reality of everyday life.&quot;
           </p>
           <p className="text-white/35 text-[13px] mt-2.5 font-medium tracking-[1px]">
             — Bill Cunningham
@@ -321,7 +326,7 @@ export default function Login() {
 
           {/* Footer */}
           <p className="text-center text-white/35 text-sm w-full mt-7">
-            Don't have an account?{" "}
+            Don&apos;t have an account?{" "}
             <Link
               to="/signup"
               className="text-[#ff6b35] font-bold no-underline transition-colors duration-200 hover:text-[#ff8555]"
@@ -331,7 +336,7 @@ export default function Login() {
           </p>
 
           <p className="text-center text-white/20 text-[11px] w-full mt-3.5 leading-[1.6]">
-            By signing in, you agree to Snitch's{" "}
+            By signing in, you agree to Snitch&apos;s{" "}
             <a
               href="#"
               className="text-white/35 underline underline-offset-2 hover:text-white/50"

@@ -5,12 +5,13 @@ import SelectRole from "../features/auth/pages/SelectRole";
 import AddProduct from "../features/product/pages/addProduct";
 import Protected from "../features/auth/pages/protected";
 import ProtectedSeller from "../features/auth/pages/ProtectedSeller";
+import SellerDashboard from "../features/product/pages/SellerDashboard";
 
 export const routes = createBrowserRouter([
   {
     path: "/",
     element: (
-      <Protected>
+      <Protected role="buyer">
         <h1>Welcome to our AuraStore APP</h1>
       </Protected>
     )
@@ -32,11 +33,19 @@ export const routes = createBrowserRouter([
     ),
   },
   {
+    path: "/seller/dashboard",
+    element: (
+      <Protected role="seller">
+        <SellerDashboard />
+      </Protected>
+    ),
+  },
+  {
     path: "/create-product",
     element: (
-      <ProtectedSeller>
+      <Protected role="seller">
         <AddProduct />
-      </ProtectedSeller>
+      </Protected>
     ),
   }
 ]);
