@@ -3,15 +3,16 @@ import { authenticateSeller } from "../middleware/auth.middleware.js";
 import { createProduct, getAllSellerProducts } from "../controller/product.controller.js";
 import upload from "../middleware/multer.middleware.js";
 import { createProductValidator } from "../validator/product.validator.js";
+import { validate } from "../middleware/validate.middleware.js";
 
 const productRouter = Router();
 
 /**
- * @route   GET /api/products/create
+ * @route   POST /api/products/create
  * @desc    Create a new product
- * @access  Private
+ * @access  Private (seller only)
  */
-productRouter.post("/create", authenticateSeller, createProductValidator, upload.array("images", 7), createProduct);
+productRouter.post("/create", authenticateSeller, upload.array("images", 7), createProductValidator, validate, createProduct);
 
 /**
  * @route   GET /api/products

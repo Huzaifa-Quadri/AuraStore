@@ -18,6 +18,7 @@ export const ERROR_MESSAGES = {
   TOKEN_EXPIRED: "Token has expired",
   INVALID_TOKEN: "Invalid token",
   UNAUTHORIZED: "Unauthorized access",
+  FORBIDDEN: "Access forbidden. Insufficient permissions.",
   INTERNAL_ERROR: "Internal server error",
   QUERY_REQUIRED: "Search query is required",
   MESSAGE_REQUIRED: "Message content is required",

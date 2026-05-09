@@ -14,8 +14,8 @@ export const registerValidator = [
     .trim()
     .notEmpty()
     .withMessage("Contact is required")
-    .isLength({ min: 10, max: 10 })
-    .withMessage("Contact must be 10 digits long"),
+    .isLength({ min: 10, max: 15 })
+    .withMessage("Contact must be between 10 and 15 digits"),
   body("email")
     .trim()
     .notEmpty()
@@ -28,7 +28,7 @@ export const registerValidator = [
     .withMessage("Password is required")
     .isLength({ min: 8, max: 12 })
     .withMessage("Password must be at least 8 characters long")
-    .matches(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/g)
+    .matches(/^[a-zA-Z0-9!@#\$%\^\&*\)\(+=._-]+$/)
     .withMessage(
       "Password can only contain letters, numbers, and standard special characters",
     ),
