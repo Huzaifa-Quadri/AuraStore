@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { setError, setLoading, setUser } from "../state/auth.slice";
-import { loginUser, registerUser, getMe, updateRole } from "../services/auth.api";
+import { loginUser, registerUser, getMe, updateRole, updateProfile } from "../services/auth.api";
 
 export const useAuth = () => {
   const dispatch = useDispatch();
@@ -83,10 +83,27 @@ export const useAuth = () => {
     }
   }
 
+  async function handleUpdateProfile({ fullname, contact }) {
+    try {
+      dispatch(setLoading(true));
+      const response = await updateProfile({ fullname, contact });
+      dispatch(setUser(response.data.user));
+      return response;
+    } catch (error) {
+      const message =
+        error?.response?.data?.message || "Failed to update profile.";
+      dispatch(setError(message));
+      return error.response?.data || { success: false, message };
+    } finally {
+      dispatch(setLoading(false));
+    }
+  }
+
   return {
     handleRegister,
     handleLogin,
     initAuth,
     handleSelectRole,
+    handleUpdateProfile,
   };
 };

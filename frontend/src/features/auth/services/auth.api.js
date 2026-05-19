@@ -36,3 +36,8 @@ export const updateRole = async (role) => {
   const response = await authApiInstance.patch("/role", { role });
   return response.data;
 };
+
+export const updateProfile = async ({ fullname, contact }) => {
+  const response = await authApiInstance.patch("/profile", { fullname, contact });
+  return response.data;
+};
