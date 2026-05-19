@@ -1,7 +1,11 @@
+// import dns from 'node:dns';
+// dns.setServers(['8.8.8.8', '8.8.4.4']); 
+
 import app from "./src/app.js";
+import { config } from "./src/config/config.js";
 import { connectDB, disconnectDB } from "./src/config/database.js";
-const PORT = process.env.PORT || 3000;
-const NODE_ENV = process.env.NODE_ENV || "development";
+const PORT = config.PORT || 3000;
+const NODE_ENV = config.NODE_ENV || "development";
 
 // ============================================
 // Server Initialization

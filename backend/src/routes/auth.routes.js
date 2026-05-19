@@ -10,6 +10,7 @@ import {
   registerUser,
   getMe,
   selectRole,
+  updateProfile,
 } from "../controller/auth.controller.js";
 import { authenticate } from "../middleware/auth.middleware.js";
 import passport from "passport";
@@ -73,5 +74,12 @@ authRouter.get("/me", authenticate, getMe);
  * @access  Private
  */
 authRouter.patch("/role", authenticate, selectRole);
+
+/**
+ * @route   PATCH /api/auth/profile
+ * @desc    Update authenticated user's profile (fullname, contact). Email is read-only.
+ * @access  Private
+ */
+authRouter.patch("/profile", authenticate, updateProfile);
 
 export default authRouter;

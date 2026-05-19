@@ -98,6 +98,31 @@ export const getMe = asyncHandler(async (req, res) => {
   });
 });
 
+export const updateProfile = asyncHandler(async (req, res) => {
+  const { fullname, contact } = req.body;
+
+  // Email is intentionally excluded — user requested it remain read-only.
+  const update = {};
+  if (fullname !== undefined) update.fullname = fullname;
+  if (contact  !== undefined) update.contact  = contact;
+
+  if (Object.keys(update).length === 0) {
+    throw new ApiError(HTTP_STATUS.BAD_REQUEST, "No updatable fields provided.");
+  }
+
+  const user = await UserModel.findByIdAndUpdate(
+    req.user._id,
+    update,
+    { new: true, runValidators: true },
+  );
+
+  res.status(HTTP_STATUS.OK).json({
+    success: true,
+    message: "Profile updated successfully",
+    data: { user },
+  });
+});
+
 export const selectRole = asyncHandler(async (req, res) => {
   const { role } = req.body;
 

@@ -44,3 +44,13 @@ export const getAllSellerProducts = asyncHandler(async (req, res) => {
   })
 });
 
+export const getAllProducts = asyncHandler(async (req, res)=> {
+  const products = await ProductModel.find();
+
+  res.status(HTTP_STATUS.OK).json({
+    success: true,
+    message: "Products fetched successfully",
+    products,
+  })
+})
+
