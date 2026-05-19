@@ -4,7 +4,6 @@ import Signup from "../features/auth/pages/Signup";
 import SelectRole from "../features/auth/pages/SelectRole";
 import AddProduct from "../features/product/pages/addProduct";
 import Protected from "../features/auth/pages/protected";
-import ProtectedSeller from "../features/auth/pages/ProtectedSeller";
 import SellerDashboard from "../features/product/pages/SellerDashboard";
 
 export const routes = createBrowserRouter([
