@@ -5,14 +5,13 @@ import SelectRole from "../features/auth/pages/SelectRole";
 import Protected from "../features/auth/pages/protected";
 import SellerDashboard from "../features/product/Seller/pages/SellerDashboard";
 import AddProduct from "../features/product/Seller/pages/addProduct";
+import Home from "../features/product/Buyer/pages/Home";
 
 export const routes = createBrowserRouter([
   {
     path: "/",
     element: (
-      <Protected role="buyer">
-        <h1>Welcome to our AuraStore APP</h1>
-      </Protected>
+      <Home/>
     )
   },
   {
