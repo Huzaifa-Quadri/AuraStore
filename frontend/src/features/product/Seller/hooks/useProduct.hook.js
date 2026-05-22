@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
-import { createProductApi, getAllSellerProductsApi, getAllProductsApi } from "../services/product.api";
-import { setSellerProducts, setProducts, setLoading, setError } from "../state/product.slice";
+import { createProductApi, getAllSellerProductsApi, getAllProductsApi } from "../../services/product.api";
+import { setSellerProducts, setProducts, setLoading, setError } from "../../state/product.slice";
 
 export const useProduct = () => {
     const dispatch = useDispatch();
@@ -38,25 +38,9 @@ export const useProduct = () => {
         }
     }
 
-    async function handleAllBuyerProducts() {
-        try {
-            dispatch(setError(null));
-            dispatch(setLoading(true));
-            const response = await getAllProductsApi();
-            dispatch(setProducts(response.products));
-        } catch (error) {
-            const message = error?.response?.data?.message || "Network error. Please try again.";
-            dispatch(setError(message));
-            return error.response?.data || { success: false, message };
-        } finally {
-            dispatch(setLoading(false));
-        }
-    }
-
     return {
         handleCreateProduct,
         handleGetAllSellerProducts,
-        handleAllBuyerProducts,
     };
 };
 

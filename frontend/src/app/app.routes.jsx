@@ -2,9 +2,9 @@ import { createBrowserRouter } from "react-router-dom";
 import Login from "../features/auth/pages/login";
 import Signup from "../features/auth/pages/Signup";
 import SelectRole from "../features/auth/pages/SelectRole";
-import AddProduct from "../features/product/pages/addProduct";
 import Protected from "../features/auth/pages/protected";
-import SellerDashboard from "../features/product/pages/SellerDashboard";
+import SellerDashboard from "../features/product/Seller/pages/SellerDashboard";
+import AddProduct from "../features/product/Seller/pages/addProduct";
 
 export const routes = createBrowserRouter([
   {

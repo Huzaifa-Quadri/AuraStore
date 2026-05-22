@@ -5,7 +5,7 @@
 
 import { useState, useEffect } from 'react';
 import { useSelector } from 'react-redux';
-import { useAuth } from '../../../auth/hook/useAuth.hook';
+import { useAuth } from '../../../../auth/hook/useAuth.hook';
 import useProduct from '../../hooks/useProduct.hook';
 
 /* ── Small inline edit / save / cancel icons ── */
