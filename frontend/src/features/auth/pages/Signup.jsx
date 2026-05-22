@@ -305,7 +305,7 @@ const Signup = () => {
           </p>
 
           <p className="text-center text-white/20 text-[11px] mt-3 leading-[1.6]">
-            By signing up, you agree to Snitch's{" "}
+            By signing up, you agree to Snitch&apos;s{" "}
             <a href="#" className="text-white/35 underline underline-offset-2 hover:text-white/50">Terms</a>
             {" "}and{" "}
             <a href="#" className="text-white/35 underline underline-offset-2 hover:text-white/50">Privacy Policy</a>
