@@ -1,5 +1,39 @@
 import mongoose from "mongoose";
 
+const imageSchema = new mongoose.Schema(
+  {
+    url: {
+      type: String,
+      required: [true, "Product Image is Mandatory"],
+    },
+    alt: {
+      type: String,
+      default: "",
+    },
+    fileId: {
+      type: String,
+      required: [true, "Image fileId is required"],
+    },
+    isThumbnail: {
+      type: Boolean,
+      default: false,
+    },
+  },
+  { _id: false },
+);
+
+const priceSchema = new mongoose.Schema(
+  {
+    amount:   { type: Number, required: [true, "Price amount is required"] },
+    currency: {
+      type: String,
+      enum: ["INR", "USD", "EUR", "GBP", "JPY", "PKR"],
+      default: "INR",
+    },
+  },
+  { _id: false },
+);
+
 const productSchema = new mongoose.Schema(
   {
     title: {
@@ -16,35 +50,48 @@ const productSchema = new mongoose.Schema(
       ref: "User",
       required: [true, "Seller is Mandatory"],
     },
-    price: {
-      amount: {
-        type: Number,
-        required: [true, "Product Price is Mandatory"],
-      },
-      currency: {
-        type: String,
-        enum: ["INR", "USD", "EUR", "GBP", "JPY", "PKR"],
-        default: "INR",
+    price: priceSchema,
+    images: {
+      type: [imageSchema],
+      validate: {
+        validator: (arr) => arr.length > 0,
+        message: "At least one product image is required",
       },
     },
-    image: {
-      url: {
-        type: String,
-        required: [true, "Product Image is Mandatory"],
-      },
-      alt: {
-        type: String,
-        required: [true, "Product Image Alt is Mandatory"],
-      },
+    stock: {
+      type: Number,
+      default: 0,
     },
-    // category: {
-    //   type: String,
-    //   required: [true, "Product Category is Mandatory"],
-    // },
-    // brand: {
-    //   type: String,
-    //   required: [true, "Product Brand is Mandatory"],
-    // },
+    category: {
+      type: String,
+      required: [true, "Product Category is Mandatory"],
+      enum: ["Electronics", "Clothing", "Books", "Home", "Beauty", "Sports", "Other"], 
+    },
+    brand: {
+      type: String,
+      required: [true, "Product Brand is Mandatory"],
+    },
+
+    variants: [
+      {
+        images: {
+          type: [imageSchema],
+          default: [],
+        },
+        stock : {
+          type: Number,
+          // required: [true, "Product Variant Stock is Mandatory"],
+          default: 0,
+        },
+
+        attributes: {  //can haave different attributes for different products, so using Map. Exp - Cores, colors, size, 
+          type: Map,
+          of: String,
+        },
+
+        price: priceSchema, //variant can have different price than main product
+      }
+    ]
     // rating: {
     //   type: Number,
     //   required: [true, "Product Rating is Mandatory"],
@@ -53,10 +100,7 @@ const productSchema = new mongoose.Schema(
     //   type: Number,
     //   required: [true, "Product Number of Reviews is Mandatory"],
     // },
-    // stock: {
-    //   type: Number,
-    //   required: [true, "Product Stock is Mandatory"],
-    // },
+
   },
   {
     timestamps: true,
