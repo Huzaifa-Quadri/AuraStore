@@ -5,7 +5,7 @@ import morgan from "morgan";
 import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 import { config } from "./config/config.js";
 import passport from "passport";
-
+import { startCleanupJob } from "./services/cleanup.service.js";
 const app = express();
 
 /**
@@ -18,6 +18,7 @@ app.use(morgan("dev"));
 app.use(express.json({ limit: "10mb" }));
 app.use(express.urlencoded({ extended: true, limit: "10mb" }));
 app.use(cookieParser());
+startCleanupJob();
 
 /**
  * CORS Configuration
