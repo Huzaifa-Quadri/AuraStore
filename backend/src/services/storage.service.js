@@ -14,3 +14,10 @@ export const uploadFile = async ({buffer, fileName, folder='snitch'}) => {
   return response;
 };
 
+export const deleteFile = async (fileId)=> {
+  const response = await client.files.delete({
+    fileId: fileId
+  });
+  return response;
+}
+
