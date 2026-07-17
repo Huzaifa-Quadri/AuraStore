@@ -5,7 +5,7 @@ import { IcoImage } from './Icons';
 /* Map currency code → symbol prefix */
 const CURRENCY_SYMBOL = { INR: '₹', USD: '$', EUR: '€', GBP: '£', JPY: '¥', PKR: '₨' };
 
-export default function ProductCard({ product }) {
+export default function ProductCard({ product, onSelect }) {
   const img      = product.image?.url || product.images?.[0]?.url || product.images?.[0];
   const amount   = product.price?.amount ?? product.price;
   const currency = product.price?.currency || 'INR';
@@ -15,7 +15,7 @@ export default function ProductCard({ product }) {
   const units    = product.unitsSold ?? 0;
 
   return (
-    <div className="product-card" style={{ background: '#0f1522', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16, overflow: 'hidden', boxShadow: '0 4px 20px rgba(0,0,0,0.25)', cursor: 'pointer' }}>
+    <div className="product-card" onClick={() => onSelect?.(product)} style={{ background: '#0f1522', border: '1px solid rgba(255,255,255,0.07)', borderRadius: 16, overflow: 'hidden', boxShadow: '0 4px 20px rgba(0,0,0,0.25)', cursor: 'pointer' }}>
 
       {/* Thumbnail */}
       <div style={{ width: '100%', aspectRatio: '4 / 3', background: '#111826', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center', overflow: 'hidden' }}>

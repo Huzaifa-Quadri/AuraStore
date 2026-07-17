@@ -91,7 +91,7 @@ function EmptyState() {
 }
 
 /* ── Assembled products page ── */
-export default function ProductsPage({ products, loading, error, sortBy, setSortBy, priceMin, setPriceMin, priceMax, setPriceMax }) {
+export default function ProductsPage({ products, loading, error, sortBy, setSortBy, priceMin, setPriceMin, priceMax, setPriceMax, onSelectProduct }) {
   return (
     <div>
       <FilterBar
@@ -113,7 +113,7 @@ export default function ProductsPage({ products, loading, error, sortBy, setSort
       ) : (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: 16 }}>
           {products.map(product => (
-            <ProductCard key={product._id} product={product} />
+            <ProductCard key={product._id} product={product} onSelect={onSelectProduct} />
           ))}
         </div>
       )}

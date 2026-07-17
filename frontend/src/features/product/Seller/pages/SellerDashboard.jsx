@@ -17,6 +17,7 @@ import { StatCard, TopProductsCard, SalesChartCard, LatestOrdersCard } from '../
 import { IcoBag, IcoDollar } from '../components/seller-dashboard/Icons';
 
 import ProductsPage from './ProductsPage';
+import SellerProductDetail from './SellerProductDetail';
 import AddProduct   from './addProduct';
 
 /* ── Global CSS — injected once at layout root ── */
@@ -88,11 +89,15 @@ export default function SellerDashboard() {
   const [priceMin, setPriceMin] = useState('');
   const [priceMax, setPriceMax] = useState('');
 
+  /* Product currently opened in the detail view (null = show the grid). */
+  const [selectedProduct, setSelectedProduct] = useState(null);
+
   /* ── Data ── */
   const { sellerProducts, loading, error } = useSelector(s => s.product);
   const { handleGetAllSellerProducts } = useProduct();
 
   useEffect(() => {
+    setSelectedProduct(null); // leaving/entering a section closes any open detail view
     if (page === 'products') {
       handleGetAllSellerProducts();
     }
@@ -130,15 +135,23 @@ export default function SellerDashboard() {
           {page === 'dashboard' && <DashboardSection />}
 
           {page === 'products' && (
-            <ProductsPage
-              products={filteredProducts} loading={loading} error={error}
-              sortBy={sortBy}     
-              setSortBy={setSortBy}
-              priceMin={priceMin} 
-              setPriceMin={setPriceMin}
-              priceMax={priceMax} 
-              setPriceMax={setPriceMax}
-            />
+            selectedProduct ? (
+              <SellerProductDetail
+                product={selectedProduct}
+                onBack={() => setSelectedProduct(null)}
+              />
+            ) : (
+              <ProductsPage
+                products={filteredProducts} loading={loading} error={error}
+                sortBy={sortBy}
+                setSortBy={setSortBy}
+                priceMin={priceMin}
+                setPriceMin={setPriceMin}
+                priceMax={priceMax}
+                setPriceMax={setPriceMax}
+                onSelectProduct={setSelectedProduct}
+              />
+            )
           )}
 
           {page === 'create-product' && <AddProduct />}

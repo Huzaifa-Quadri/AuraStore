@@ -8,8 +8,16 @@ const productApiInstance = axios.create ({
     withCredentials: true
 });
 
-export const createProductApi = async(formData) => {
-    const response = await productApiInstance.post("/create", formData);
+// PHASE 1 — upload one group of raw files (multipart). Field name MUST be "images".
+// Returns [{ url, fileId, name }, ...].
+export const uploadImagesApi = async(formData) => {
+    const response = await productApiInstance.post("/upload", formData);
+    return response.data;
+}
+
+// PHASE 2 — create the product from JSON (url + fileId receipts embedded in body).
+export const createProductApi = async(body) => {
+    const response = await productApiInstance.post("/create", body);
     return response.data;
 }
 

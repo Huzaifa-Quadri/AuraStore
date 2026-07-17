@@ -1,7 +1,7 @@
 import React from "react";
 import { SectionHeader, FieldLabel, ErrorMsg, Hint } from "./FormHelpers";
 
-const ProductInfoCard = ({ form, errors, focused, onUpdate, onFocus, onBlur, fieldClass }) => (
+const ProductInfoCard = ({ form, errors, focused, categories, onUpdate, onFocus, onBlur, fieldClass }) => (
   <div className="rounded-2xl border border-white/8 bg-[#0a0d16] p-6">
     <SectionHeader color="orange" label="Product Info" />
 
@@ -42,6 +42,47 @@ const ProductInfoCard = ({ form, errors, focused, onUpdate, onFocus, onBlur, fie
       />
       {errors.description && <ErrorMsg msg={errors.description} />}
       <Hint>20–1000 characters required</Hint>
+    </div>
+
+    {/* Category + Brand */}
+    <div className="grid grid-cols-2 gap-4 mt-5">
+      <div>
+        <FieldLabel label="Category" />
+        <div className={`flex items-center gap-3 px-4 py-3.5 rounded-xl border transition-all duration-200 ${fieldClass("category")}`}>
+          <select
+            value={form.category}
+            onChange={onUpdate("category")}
+            onFocus={() => onFocus("category")}
+            onBlur={onBlur}
+            className="flex-1 bg-transparent border-none outline-none text-white text-sm appearance-none cursor-pointer font-medium"
+          >
+            <option value="" disabled className="bg-[#0b0f1a] text-white/40">Select category</option>
+            {categories.map((c) => (
+              <option key={c} value={c} className="bg-[#0b0f1a] text-white">{c}</option>
+            ))}
+          </select>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="rgba(255,255,255,0.22)" strokeWidth="2.5" strokeLinecap="round">
+            <polyline points="6 9 12 15 18 9" />
+          </svg>
+        </div>
+        {errors.category && <ErrorMsg msg={errors.category} />}
+      </div>
+
+      <div>
+        <FieldLabel label="Brand" />
+        <div className={`flex items-center gap-3 px-4 py-3.5 rounded-xl border transition-all duration-200 ${fieldClass("brand")}`}>
+          <input
+            type="text"
+            placeholder="e.g. Snitch"
+            value={form.brand}
+            onChange={onUpdate("brand")}
+            onFocus={() => onFocus("brand")}
+            onBlur={onBlur}
+            className="flex-1 bg-transparent border-none outline-none text-white text-sm placeholder:text-white/18 font-medium"
+          />
+        </div>
+        {errors.brand && <ErrorMsg msg={errors.brand} />}
+      </div>
     </div>
   </div>
 );
