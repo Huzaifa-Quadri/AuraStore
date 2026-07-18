@@ -1,12 +1,12 @@
 /* ── Buyer Home (storefront) ───────────────────────────────────────────────
   Thin orchestrator: composes the sections and owns the auth-gated product
-  click. DATA WIRING IS LEFT BLANK — see the TODO blocks below; until you wire
-  the hook, sections fall back to mock data so the page renders. 
-*/
+  click. Real products are fetched on mount via useProduct and read from the
+  `product` slice; a click routes to /product/:id (login-gated when logged out). */
 
 import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { toast } from "sonner";
+import {useEffect} from "react";
 
 import "../styles/buyer.css";
 
@@ -18,7 +18,7 @@ import FeaturedScroll from "../components/FeaturedScroll";
 import ProductSection from "../components/ProductSection";
 import Footer from "../components/Footer";
 
-import { MOCK_PRODUCTS } from "../components/data";
+import {useProduct} from "../hook/useProduct.hook";
 
 const Home = () => {
   const navigate = useNavigate();
@@ -26,19 +26,13 @@ const Home = () => {
   // Auth: logged-out users can browse but are sent to login on product click.
   const { user } = useSelector((state) => state.auth);
 
-  /* ──────────────────────────────────────────────────────────────────────
-    TODO (you): wire real product data here. Example:
+  const {handleAllBuyerProducts} = useProduct();
 
-      const { handleAllBuyerProducts } = useProduct();
-      useEffect(() => { handleAllBuyerProducts(); }, []);
-      const { products, loading, error } = useSelector((s) => s.product);
+  useEffect(()=>{
+    handleAllBuyerProducts();
+  }, []);
 
-    Then pass `products / loading / error` into <ProductSection /> and replace
-    the mock fallbacks below. `onRetry` should re-call handleAllBuyerProducts.
-     ────────────────────────────────────────────────────────────────────── */
-  const products = MOCK_PRODUCTS; // placeholder
-  const loading = false; // placeholder
-  const error = null; // placeholder
+  const {products, loading, error} = useSelector((state) => state.product);
 
   // Auth gate: any card/button routes logged-out users to /login first.
   // When logged in, the wrapped action runs (wire real routes inside each).
@@ -59,9 +53,7 @@ const Home = () => {
   }
 
   const handleProductClick = guard((product) => {
-    // TODO (you): navigate to the product detail route once it exists.
-    // navigate(`/product/${product._id}`);
-    void product;
+    navigate(`/product/${product._id}`);
   });
 
   return (
@@ -95,7 +87,7 @@ const Home = () => {
         loading={loading}
         error={error}
         onProductClick={handleProductClick}
-        onRetry={() => { /* TODO: re-fetch products */ }}
+        onRetry={handleAllBuyerProducts}
       />
 
       <Footer />

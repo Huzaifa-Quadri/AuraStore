@@ -159,3 +159,11 @@ export const getAllProducts = asyncHandler(async (req, res) => {
     products,
   });
 });
+
+export const getProductById = asyncHandler(async (req, res) => {
+  const product = await ProductModel.findById(req.params.id);
+  
+  if (!product) throw new ApiError(HTTP_STATUS.NOT_FOUND, "Product not found");
+
+  res.status(HTTP_STATUS.OK).json({ success: true, product });
+});

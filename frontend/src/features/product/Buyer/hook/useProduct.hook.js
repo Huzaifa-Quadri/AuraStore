@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { setError, setLoading, setProducts } from "../../state/product.slice";
-import { getAllProductsApi } from "../../services/product.api";
+import { getAllProductsApi, getProductByIdApi } from "../../services/product.api";
 
 export const useProduct = () => {
     const dispatch = useDispatch();
@@ -20,8 +20,17 @@ export const useProduct = () => {
         }
     }
 
+    // Fetch a single product for the detail page. A single product doesn't belong
+    // in the shared `products` array, so this returns it and lets the page own its
+    // own loading / error / not-found state. Throws so the page can branch on it.
+    async function handleGetProductById(id) {
+        const response = await getProductByIdApi(id);
+        return response.product;
+    }
+
     return {
         handleAllBuyerProducts,
+        handleGetProductById,
     };
 
 }

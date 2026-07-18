@@ -77,3 +77,14 @@ dump/
 .prettiercache
 .parcel-cache
 .turbo/
+
+# Ignore all Markdown files everywhere
+**/*.md
+
+# Except README.md anywhere
+!**/README.md
+
+data.js
+
+**/frontend/**/vite.svg
+**/frontend/**/react.svg

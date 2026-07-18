@@ -55,10 +55,19 @@
   animation: aura-shimmer 1.4s ease-in-out infinite;
 }
 
+/* ── Product detail ──────────────────────────────────────────────────────── */
+/* Entrance/reveal is handled by framer-motion; these rules only own layout. */
+@media (prefers-reduced-motion: reduce) {
+  .buyer-home .aura-shimmer { animation: none; }
+}
+
 /* ── Responsive ──────────────────────────────────────────────────────────── */
 @media (max-width: 860px) {
   .buyer-home .aura-finder-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
   .buyer-home .aura-featured-grid { grid-template-columns: 1fr !important; }
+  /* Product detail: stack gallery above info and drop the sticky column. */
+  .buyer-home .pd-grid { grid-template-columns: 1fr !important; gap: 32px !important; }
+  .buyer-home .pd-gallery-col { position: static !important; top: auto !important; }
 }
 
 @media (max-width: 640px) {
