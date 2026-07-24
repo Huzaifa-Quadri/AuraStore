@@ -83,9 +83,11 @@ import authRouter from "./routes/auth.routes.js";
 import { errorHandler } from "./middleware/error.middleware.js";
 import { ApiError } from "./utils/ApiError.js";
 import productRouter from "./routes/product.routes.js";
+import cartRouter from "./routes/cart.route.js";
 
 app.use("/api/auth", authRouter);
 app.use("/api/products", productRouter);
+app.use("/api/cart", cartRouter);
 
 // ============================================
 // Global Error Handling
