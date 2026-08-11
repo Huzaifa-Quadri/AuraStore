@@ -211,4 +211,86 @@ const getCart = asyncHandler(async (req, res) => {
   });
 });
 
-export { addToCart, getCart };
+/**
+ * @route  PATCH /api/cart/items/:id
+ * @desc   Change the quantity of one existing cart line.
+ * @body   { quantity }
+ * @access Private
+ */
+const updateCartItem = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+  const { quantity } = req.body;
+
+  const cart = await cartModel.findOne({ user: req.user._id });
+  const item = cart?.items.id(id);
+  if (!item) {
+    throw new ApiError(HTTP_STATUS.NOT_FOUND, "Cart item not found");
+  }
+
+  const product = await productModel.findById(item.product);
+  if (!product) {
+    throw new ApiError(HTTP_STATUS.NOT_FOUND, "This product is no longer available");
+  }
+
+  // Check against LIVE stock, not whatever was true when the item was added.
+  const variant = item.variantId ? product.variants.id(item.variantId) : null;
+  const stock = Number(variant ? variant.stock : product.stock) || 0;
+
+  if (quantity > stock) {
+    throw new ApiError(HTTP_STATUS.BAD_REQUEST, `Only ${stock} unit(s) available.`);
+  }
+
+  item.quantity = quantity;
+  await cart.save();
+
+  return res.status(HTTP_STATUS.OK).json({
+    success: true,
+    message: "Cart item updated",
+    cart,
+  });
+});
+
+/**
+ * @route  DELETE /api/cart/items/:id
+ * @desc   Remove a single line from the cart.
+ * @access Private
+ */
+const removeCartItem = asyncHandler(async (req, res) => {
+  const { id } = req.params;
+
+  const cart = await cartModel.findOne({ user: req.user._id });
+  const item = cart?.items.id(id);
+  if (!item) {
+    throw new ApiError(HTTP_STATUS.NOT_FOUND, "Cart item not found");
+  }
+
+  item.deleteOne(); // removes this subdocument from cart.items
+  await cart.save();
+
+  return res.status(HTTP_STATUS.OK).json({
+    success: true,
+    message: "Item removed from cart",
+    cart,
+  });
+});
+
+/**
+ * @route  DELETE /api/cart
+ * @desc   Empty the whole cart (post-checkout, or a "Clear cart" button).
+ * @access Private
+ */
+const clearCart = asyncHandler(async (req, res) => {
+  const cart = await cartModel.findOneAndUpdate(
+    { user: req.user._id },
+    { items: [] },
+    { returnDocument: "after" },
+  );
+
+  return res.status(HTTP_STATUS.OK).json({
+    success: true,
+    message: "Cart cleared",
+    cart: cart || { user: req.user._id, items: [] },
+  });
+});
+
+export { addToCart, getCart, updateCartItem, removeCartItem, clearCart };

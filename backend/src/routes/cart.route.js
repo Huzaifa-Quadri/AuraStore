@@ -1,8 +1,18 @@
 import express from "express";
 import { authenticate } from "../middleware/auth.middleware.js";
-import { addToCartValidator } from "../validator/cart.validator.js";
+import {
+  addToCartValidator,
+  updateCartItemValidator,
+  removeCartItemValidator,
+} from "../validator/cart.validator.js";
 import { validate } from "../middleware/validate.middleware.js";
-import { addToCart, getCart } from "../controller/cart.controller.js";
+import {
+  addToCart,
+  getCart,
+  updateCartItem,
+  removeCartItem,
+  clearCart,
+} from "../controller/cart.controller.js";
 
 const router = express.Router();
 
@@ -22,5 +32,26 @@ router.post("/", authenticate, addToCartValidator, validate, addToCart);
  * @access Private (authenticated users)
  */
 router.get("/", authenticate, getCart);
+
+/**
+ * @route  PATCH /api/cart/items/:id
+ * @desc   Update the quantity of a single cart line.
+ * @access Private (authenticated users)
+ */
+router.patch("/items/:id", authenticate, updateCartItemValidator, validate, updateCartItem);
+
+/**
+ * @route  DELETE /api/cart/items/:id
+ * @desc   Remove a single line from the cart.
+ * @access Private (authenticated users)
+ */
+router.delete("/items/:id", authenticate, removeCartItemValidator, validate, removeCartItem);
+
+/**
+ * @route  DELETE /api/cart
+ * @desc   Empty the whole cart.
+ * @access Private (authenticated users)
+ */
+router.delete("/", authenticate, clearCart);
 
 export default router;
